@@ -26,7 +26,7 @@ local_css("style/style.css")
 
 
 
-
+@st.cache(suppress_st_warning=True)
 def predicting(image, model):
     image = load_and_prep(image)
     image = tf.cast(tf.expand_dims(image, axis=0), tf.int16)
