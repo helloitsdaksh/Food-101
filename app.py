@@ -4,6 +4,7 @@ import pandas as pd
 import altair as alt
 from utils import load_and_prep, get_classes
 
+
 @st.cache(suppress_st_warning=True)
 def predicting(image, model):
     image = load_and_prep(image)
@@ -27,16 +28,29 @@ class_names = get_classes()
 st.set_page_config(page_title="Food-101",
                    page_icon="🍔")
 
-#### SideBar ####
+def local_css(file_name):
+    with open(file_name) as f:
+        st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
-st.sidebar.title("What's Food-101 ?")
-st.sidebar.write("""
+
+local_css("style/style.css")
+
+#### SideBar ####
+st.sidebar.markdown("""
+# What's Food-101 ?
+
 Milestone Food-101 is an end-to-end **CNN Image Classification Model** which identifies the food in your image. 
 It can identify over 100 different food classes
 It is based upom a pre-trained Image Classification Model that comes with Keras and then retrained on the infamous **Food101 Dataset**.
-**Accuracy :** **`82%`**
-**Model :** **`EfficientNetB0`**
-**Dataset :** **`Food101`**
+
+* **Accuracy :** **`82%`**
+* **Model :** **`EfficientNetB0`**
+* **Dataset :** **`Food101`**
+
+* This project is part of the Zero to Mastery Tensorflow Developer course (MileStone Project 1).
+* This project based on the [Food101](https://data.vision.ee.ethz.ch/cvl/datasets_extra/food-101/) Paper which used Convolutional Neuranetwork trained for 2 to 3 days to achieve 77.4% top-1 accuracy.
+* The project is made by download the food101 dataset from the [TensorFlow dataset](https://www.tensorflow.org/datasets/catalog/food101)(size: 4.6GB) which consists of 750 images x 101 training classes = 75750 training images.
+* I used the [EfficientNetB0](https://github.com/helloitsdaksh/Tensorflow_colab/blob/main/07_food_vision_milestone_project_1.ipynb) model with fine-tune freezed layers of the model. \n
 """)
 
 
