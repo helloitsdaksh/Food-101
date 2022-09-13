@@ -3,9 +3,30 @@ import tensorflow as tf
 import pandas as pd
 import altair as alt
 from utils import load_and_prep, get_classes
+class_names = get_classes()
 
 
-@st.cache(suppress_st_warning=True)
+
+
+
+st.set_page_config(page_title="Food-101",
+                   page_icon="🍔")
+
+@st.cache(allow_output_mutation=True)
+def load_model():
+    model = tf.keras.models.load_model('.\model\EfficientNetB0.h5')
+    return model
+model = load_model()
+
+
+def local_css(file_name):
+    with open(file_name) as f:
+        st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
+local_css("style/style.css")
+
+
+
+
 def predicting(image, model):
     image = load_and_prep(image)
     image = tf.cast(tf.expand_dims(image, axis=0), tf.int16)
@@ -23,17 +44,6 @@ def predicting(image, model):
     df = df.sort_values('F1 Scores')
     return pred_class, pred_conf, df
 
-class_names = get_classes()
-
-st.set_page_config(page_title="Food-101",
-                   page_icon="🍔")
-
-def local_css(file_name):
-    with open(file_name) as f:
-        st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
-
-
-local_css("style/style.css")
 
 #### SideBar ####
 st.sidebar.markdown("""
@@ -63,7 +73,6 @@ file = st.file_uploader(label="Upload an image of food.",
                         type=["jpg", "jpeg", "png"])
 
 
-model = tf.keras.models.load_model("./model/EfficientNetB0.h5")
 
 
 st.sidebar.markdown("Created by **Daksh Patel**")
